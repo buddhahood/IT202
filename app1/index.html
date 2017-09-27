@@ -12,10 +12,12 @@
             console.log(response);
             
           $.each(response, function(i,v) {
-               console.log(v.service_request_number);
-               console.log(v.status);
-               console.log(v.street_address);
-             $("body").append(v.service_request_number + " " + v.status +" " + v.street_address + "<br>");
+            console.log(v.service_request_number);
+            console.log(v.status);
+               
+            console.log(v.street_address);
+               
+            $("body").append(v.service_request_number + "     " + v.status + "     " + v.street_address + "<br>");
             });
 
          });
