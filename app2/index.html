@@ -1,0 +1,127 @@
+<!-- Source: https://developers.google.com/maps/documentation/javascript/examples/infowindow-simple -->
+
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Info windows</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+      #map {
+        height: 100%;
+      }
+
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      
+      #template {
+            display: none;
+        }
+    </style>
+  </head>
+  <body>
+    <div id="template" class="hidden entry-container">
+         <!-- template panel from https://getbootstrap.com/docs/3.3/components/#panels -->
+        <div class="panel panel-default">
+         <div class="panel-heading">
+                <h3 class="panel-title">asdf</h3>
+          </div>
+          <div class="panel-body">
+                Panel content
+          </div>
+          <div class="panel-footer">
+                Panel Footer
+          </div>
+        </div>
+    </div>  
+    <div id="map"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+
+      function initMap() {
+        var uluru = {lat: 41.930754058940664, lng: -87.79706466410363};
+        
+
+        $.get("https://data.cityofchicago.org/resource/cdmx-wzbz.json?$limit=30",function(response){
+            data = response;
+            
+            var map = new google.maps.Map(document.getElementById('map'), {
+              zoom: 12,
+              center: {lat:+response[0].latitude,lng:+response[0].longitude}
+            });
+            plotData(response,map);
+            
+            console.log("done");
+        });  
+      }
+      
+
+
+
+
+
+        function createEntry(entry){
+            let formattedEntry = $("<div></div>").addClass("container");
+            formattedEntry.append($("<p></p>").html(`   Request Number: ${entry.service_request_number}`).addClass("row"));
+            formattedEntry.append($("<p></p>").html(`   Street Address: ${entry.street_address}`).addClass("row"));
+            formattedEntry.append($("<p></p>").html(`   Repair Status: ${entry.status}`).addClass("row"));
+            return formattedEntry;
+        }
+      
+
+
+
+
+        function createEntryPanel(entry){
+            let entryPanel = $("#template").clone()
+                .removeClass("hidden")
+                .attr("id",entry.service_request_number);
+            entryPanel
+                .find(".panel-title")
+                    .text(`Entry ${entry.service_request_number}`)
+                    .end()
+                .find(".panel-body")
+                    .html(`<b>Address:</b> ${entry.street_address}<br><b>Status:</b> ${entry.status}`)
+                    .end()
+                .find(".panel-footer") //display status
+                    .html(`<b>Opened:</b> ${new Date(entry.creation_date).toDateString()}<br><b>Completed:</b> ${entry.completion_date ? new Date(entry.completion_date).toDateString() : "N/A"}`);
+                    
+            if(entry.status.toLowerCase().indexOf("complete") > -1){
+                entryPanel.find(".panel").addClass("panel-success");
+            }else{
+                entryPanel.find(".panel").addClass("panel-warning");
+            }
+            
+            return entryPanel;
+        }
+      
+      function plotData(dataToPlot,gMap){
+            $.each(dataToPlot,function(i,d){
+                var marker = new google.maps.Marker({
+                  position: {lat: +d.latitude, lng: +d.longitude},
+                  map: gMap,
+                  title: d.service_resquest_number
+                });
+                
+                var infowindow = new google.maps.InfoWindow({
+                  content: createEntry(d).html()
+                });
+                
+                marker.addListener('click', function() {
+                  infowindow.open(map, marker);
+                });
+            });
+
+      }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA4OmbugpUiFIhMDNaHQE0efNrFW2fZB88&callback=initMap">
+    </script>
+  </body>
+</html>

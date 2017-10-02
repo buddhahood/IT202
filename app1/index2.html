@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <title> 311 Graffiti Data Requests</title>
+
+        <h1>City of Chicago - Graffiti Request Data</h1>
+        <script>
+        
+          $.get("https://data.cityofchicago.org/resource/cdmx-wzbz.json?$limit=100", function(response) {
+            console.log(response);
+            
+          $.each(response, function(i,v) {
+//            console.log(v.service_request_number);
+            console.log(v.latitude);
+            console.log(v.longitude);
+
+               
+//            $("body").append(v.service_request_number + "     " + v.status + "     " + v.street_address + "<br>");
+            $("body").append(v.latitude + "  " + v.longitude + "<br>");
+            });
+
+         });
+        </script>
+    </head>
+    <body>
+    </body>
+</html>
