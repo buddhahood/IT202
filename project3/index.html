@@ -10,7 +10,7 @@
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
  <script type = "text/javascript">
   function getData(){
-  var Url = "https://data.cityofchicago.org/resource/cwig-ma7x.json?"
+  var Url = "https://data.cityofchicago.org/resource/cwig-ma7x.json?limit=50"
   var search = {
         inspection_date : $("#Inspection_Date").val(),
         facility_type :  $("#Facility_Type").val(),
@@ -112,7 +112,7 @@ $("#sub").on("click", getData());
     <input id = "sub" type="submit" value="Search">
     </form>
     </div>
-<div class = "conatainer screen" id = "screen2">
+<div class = "container screen" id = "screen2">
     
     <div class="panel panel-default hidden" id = "template">
   <div class="panel-heading">Panel Heading</div>
