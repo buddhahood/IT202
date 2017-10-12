@@ -1,54 +1,44 @@
-<!-- Source: https://developers.google.com/maps/documentation/javascript/examples/infowindow-simple -->
-
-
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
-    <meta charset="utf-8">
-    <title>Info windows</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <style>
-      #map {
-        height: 100%;
-      }
-
-      html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
-      
-      #template {
-            display: none;
-        }
-    </style>
-  </head>
-  <body>
-    <div id="template" class="hidden entry-container">
-         <!-- template panel from https://getbootstrap.com/docs/3.3/components/#panels -->
-        <div class="panel panel-default">
-         <div class="panel-heading">
-                <h3 class="panel-title">asdf</h3>
-          </div>
-          <div class="panel-body">
-                Panel content
-          </div>
-          <div class="panel-footer">
-                Panel Footer
-          </div>
-        </div>
-    </div>  
-    <div id="map"></div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>submit demo</title>
+  <style>
+  p {
+    margin: 0;
+    color: blue;
+  }
+  div,p {
+    margin-left: 10px;
+  }
+  span {
+    color: red;
+  }
+  </style>
+  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+</head>
+<body>
+ 
+<p>enter zip.</p>
+<form action="javascript:alert( 'success!' );">
+  <div>
+    <input type="text">
+    <input type="submit">
+  </div>
+</form>
+<span></span>
+ 
+<script>
+$( "form" ).submit(function( event ) {
+  
+  
+  <script>
 
       function initMap() {
         var uluru = {lat: 41.930754058940664, lng: -87.79706466410363};
         
 
-        $.get("https://data.cityofchicago.org/resource/f7f2-ggz5.json?zip=60610",function(response){
+        $.get("https://data.cityofchicago.org/resource/f7f2-ggz5.json?zip=60637",function(response){
             data = response;
             
             var map = new google.maps.Map(document.getElementById('map'), {
@@ -123,5 +113,9 @@
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA4OmbugpUiFIhMDNaHQE0efNrFW2fZB88&callback=initMap">
     </script>
-  </body>
+  
+});
+</script>
+ 
+</body>
 </html>

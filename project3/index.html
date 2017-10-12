@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+ <script type = "text/javascript">
+  function getData(){
+  var Url = "https://data.cityofchicago.org/resource/cwig-ma7x.json?"
+  var search = {
+        inspection_date : $("#Inspection_Date").val(),
+        facility_type :  $("#Facility_Type").val(),
+        status : $("#Status").val(),
+        zip :  $("#Zip").val()
+    }
+ 
+ 
+ console.log(search);
+ var count = 0;
+ 
+$.getJSON(Url , function(result){
+ 
+     console.log(result);
+
+        $.each(result, function(i, field){
+            
+            count= count+ 1;
+            
+            var clone = $("#template").clone();
+                        $(clone).find(".panel-heading").text(field.aka_name);
+            $(clone).find(".panel-body").text("Zip: " + field.zip + " Status: "+ field.status + " Facility Type: " +field.facility_type + " Inspection_Date: "+ field.inspection_date);
+            $(clone).css("display:show");
+            
+            $("#screen2").append(clone);
+                                });
+        
+$(".screen").append("Number of Results: "+ count);
+                    });
+  }
+ 
+$("#sub").on("click", getData());
+     </script>
+      <style>
+              #map{
+                       height: 400px;
+        width: 100%;
+       }
+       
+       #sub{
+           background-color : green;
+           color :white;
+           
+       }
+       #screen2{
+           display:none;
+       }
+       
+       #screen3{
+           display:none;}
+           
+           #panel-default{
+             display: none;
+           }
+       
+   </style>
+    </head>
+
+  <body>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Navbar</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#screen1">Search</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#screen2">Data Results Chart</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#screen3">Data Results Map</a>
+      </li>
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+  </div>
+</nav>
+  <div class="jumbotron container screen" id = "screen1">
+  <h1 class="display-3">Chicago Food Inspection Search</h1>
+  <form>
+      Inspection Date: <br>
+  <input type="text" id ="Inspection_Date"><br>
+        Facility Type:<br>
+     
+  <input type="text" id ="Facility_Type"><br>
+        Status:<br>
+    <input  type = "text" id = "Status"><br>
+        Zip  Code:<br>
+    <input type = "text"  id = "Zip"><br>
+    <input id = "sub" type="submit" value="Search">
+    </form>
+    </div>
+<div class = "conatainer screen" id = "screen2">
+    
+    <div class="panel panel-default hidden" id = "template">
+  <div class="panel-heading">Panel Heading</div>
+  <div class="panel-body">Panel Content</div>
+</div>
+</div>
+<div class = "container screen" id = "screen3">
+       <h3>Resturant Inspection Locations</h3>
+    <div id="map"></div>
+    <script>
+      function initMap() {
+        var chicago = {lat: 41.8789, lng: -87.6359};
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 4,
+          center: chicago
+        });
+        var marker = new google.maps.Marker({
+          position: chicago,
+          map: map
+        });
+      }
+      
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA4OmbugpUiFIhMDNaHQE0efNrFW2fZB88&callback=initMap">
+    </script>
+    
+</div>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+
+ <script>
+  $(document).ready(function() {
+    
+    $(".nav-link").on("click", function() {
+      $(".screen").hide();
+      var target = $(this).attr("href");
+      $(target).show();
+    })
+    });
+  
+  
+</script>
+ 
+  </body>
+</html>
+
+
