@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <meta name="robots" content="noindex,follow">
+        <style>
+            body {background-color: rgb(0, 0, 0);}
+            h2   {  color: rgb(255, 255, 255);
+                    font-family: verdana;
+                    font-size: 75%;}
+            p    {  color: rgb(255, 255, 255);
+                    font-family: verdana;
+                    font-size: 75%;}
+            div {
+                    max-width: 640px;
+                    margin: 0 auto;
+                    text-align: center;
+            }
+            #GameCanvas {
+                    display: block;
+                    margin: 0 auto 16px;
+            }
+        </style>
+        <title> Project 4 - IT202 </title>
+        <center>
+        <p>Bernie Richard - IT202 - Project 4</p>
+        <h2>Project 4: JS/HTML5 Canvas Game</h2>
+        <button id="btnStart" class="btn btn-default">Start/Pause</button>
+        <form>
+            <center>
+                <p>
+                    Catch the white bubbles with your toupee.  Avoid the gray bubbles!<br>
+                    Refresh page to restart.
+                </p>
+                <h2>You have <a id="getScore">0</a> points and <a id="getLives">3</a> remaining lives.</h2>
+            </center>
+            </h2>
+        </form>
+    </head>
+    <body>
+        <div>
+            <canvas id="GameCanvas" width="640" height="480" style="border:5px solid #ffffff;">
+            </canvas>
+        </div>
+        <script>
+            (function() {
+            //**********************************************************
+            var canvas = document.getElementById('GameCanvas'); //adds the scrolling backgroudn to the canvas
+            var context = canvas.getContext('2d');
+            //**********************************************************
+            var looping = false;
+            var totalSeconds = 0;
+            var ctx = document.getElementById('GameCanvas').getContext('2d');  //adds the actual game stuff to the canvas also.
+            var img = new Image();
+            img.onload = imageLoaded;
+            img.src = 'index.png';
+            var wierdo = new Image();
+            wierdo.src = "player.png";
+            ////////////set variables for the player and the other pieces
+            var game = {"score":0, "lives":9};
+            var player = {x: 200, y: 400, color:"blue", shape: wierdo, size: 40};
+                    // Harm pieces.
+                    var gray1 = {x:100, y:0, color: "gray", shape: "circle", size: 10};
+                    var gray2 = {x:250, y:0, color: "gray", shape: "circle", size: 12};
+                    var gray3 = {x:300, y:0, color: "gray", shape: "circle", size: 15};
+                    var gray4 = {x:500, y:0, color: "gray", shape: "circle", size: 17};
+                    // Benefit pieces.
+                    var white1 = {x:150, y:0, color:"white", shape:"circle", size: 14};
+                    var white2 = {x:350, y:0, color:"white", shape:"circle", size: 14};
+                    var white3 = {x:400, y:0, color:"white", shape:"circle", size: 14};
+            // Score and Lives to top
+            document.getElementById("getLives").innerHTML = game.lives;
+            document.getElementById("getScore").innerHTML = game.score;
+            function imageLoaded() {
+                draw(0);
+                var btn = document.getElementById('btnStart');  // Event handler!
+                btn.addEventListener('click', function() {
+                    startStop();
+                });
+            }
+            var lastFrameTime = 0;
+            function startStop() {
+                looping = !looping;
+                if (looping) {
+                    lastFrameTime = Date.now();
+                    requestAnimationFrame(loop);
+                }
+            }
+            function draw(delta) {
+                totalSeconds += delta;
+                var vx = 30; // the background scrolls with a speed of 30 pixels/sec
+                var numImages = Math.ceil(canvas.width / img.width) + 1;
+                var xpos = totalSeconds * vx % img.width;
+                context.save();
+                context.translate(-xpos, 0);
+                for (var i = 0; i < numImages; i++) {
+                context.drawImage(img, i * img.width, 0);  
+                }
+                context.restore();
+            }
+            {
+                        params = $.extend(
+                        {
+                            scrollSpeed: 8,
+                            imageWidth: $('#GameBackground').width(),
+                            imageHeight: $('#GameBackground').height()
+                        }, params);
+                        
+                        var step = 1,
+                            current = 0,
+                            restartPosition = - (params.imageWidth - params.imageHeight);
+                        var scroll = function() 
+                        {
+                            current -= step;
+                            if (current == restartPosition)
+                            {
+                                current = 0;
+                            }	
+                            $('#GameBackground').css('backgroundPosition', current + 'px 0');
+                        };
+                        this.init = function() {
+                            setInterval(scroll, params.scrollSpeed);
+                        };
+                    };
+                    function drawPic(piece) 
+                    {
+                        document.onkeydown = function(e) {          //keyboard movements
+                            switch (e.keyCode) {
+                                case 37:
+                                    piece.x -= 10;
+                                    if(piece.x <= 0){
+                                        piece.x = 640;
+                                    }
+                                    break;
+                                case 39:
+                                    piece.x +=  10;
+                                    if(piece.x >= 640){
+                                        piece.x = 0;
+                                    }
+                                    break;
+                            }
+                        }
+                        ctx.drawImage(piece.shape, piece.x, piece.y, piece.size*2, piece.size*2);
+                        ctx.fill();
+                        ctx.stroke();
+                    }  
+                    //*********************************************************************************************
+                    function drawCircle(piece)
+                    {   
+                        if(piece.y == 500) // When it hits the bottom, restart from the top (changed from 480 to 500 so it appears more random)
+                        {   piece.x = Math.floor(Math.random()*640);
+                            piece.y = 0;
+                        }
+                        ctx.beginPath();
+                        ctx.arc(piece.x,piece.y,piece.size,0,2*Math.PI);
+                        ctx.fillStyle = piece.color;
+                        ctx.fill();
+                        ctx.stroke();
+                        ctx.lineWidth = 1;
+                        ctx.strokeStyle = '#000000';
+                        ctx.stroke();
+                    }
+                    //*********************************************************************************************
+                    function decide(piece)
+                    {   
+                        switch(piece.shape)                     
+                        {   case wierdo:
+                                drawPic(piece); break;
+                            case "circle":
+                                drawCircle(piece); break;
+                        }
+                    }
+                    //*********************************************************************************************
+                    function crashTest(hero, help, hurt)
+                    {
+                        var dx = Math.pow(help.x-hero.x, 2);
+                        var dy = Math.pow(help.y-hero.y, 2);
+                        var heroHelpDistance = Math.sqrt((dx+dy));
+                        if(heroHelpDistance < help.size + hero.size)
+                        {   help.x = Math.floor(Math.random()*640);
+                            help.y = 0;
+                            game.score += 1;
+                            document.getElementById("getScore").innerHTML = game.score;
+                            console.log(game.score);
+                        }
+                        var heroHurtDistance = Math.sqrt(Math.pow(hurt.x-hero.x,2) + Math.pow(hurt.y-hero.y,2));
+                        if(heroHurtDistance < 30)
+                        {   hurt.x = Math.floor(Math.random()*640);
+                            hurt.y = 0;
+                            game.lives -= 1;
+                            document.getElementById("getLives").innerHTML = game.lives;
+                            console.log(game.lives);
+                            if(game.lives == 0)
+                            {   cancelAnimationFrame(loop);
+                                ctx.font = "75px verdana";
+                                ctx.fillStyle = 'red';
+                                ctx.fillText("GAME OVER",90,300);
+                                startStop();
+                            }
+                        }
+                    }
+                    function loop() {
+                if (!looping) {
+                    return;
+                }
+                requestAnimationFrame(loop);
+                var now = Date.now();
+                var deltaSeconds = (now - lastFrameTime) / 1000;
+                lastFrameTime = now;
+                draw(deltaSeconds);
+                        //////Move the bad guys at different speeds
+                        white1.y+=1;
+                        white2.y+=1.5;
+                        white3.y+=2;
+                        //////Move the bad guys at different speeds
+                        gray1.y+=1;
+                        gray2.y+=1.5;
+                        gray3.y+=2;
+                        gray4.y+=2.5;
+                        //picks image or circle                        
+                        decide(player);
+                        decide(white1);
+                        decide(white2);
+                        decide(white3);
+                        decide(gray1);
+                        decide(gray2);
+                        decide(gray3);
+                        decide(gray4);
+                        // checks for contact
+                        crashTest(player, white1, gray1);
+                        crashTest(player, white1, gray2);
+                        crashTest(player, white1, gray3);
+                        crashTest(player, white1, gray4);
+                        crashTest(player, white2, gray1);
+                        crashTest(player, white2, gray2);
+                        crashTest(player, white2, gray3);
+                        crashTest(player, white2, gray4);
+                        crashTest(player, white3, gray1);
+                        crashTest(player, white3, gray2);
+                        crashTest(player, white3, gray3);
+                        crashTest(player, white3, gray4);                   
+                        }
+            }
+            ()
+            );
+        </script>
+    </body>
+</html>
+

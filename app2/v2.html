@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <style>
+    </style>
+  </head>
+  <body>
+    <canvas id="myCanvas" width="578" height="200"></canvas>
+    <script>
+    function drawCircle(x,y){
+    
+      var canvas = document.getElementById('myCanvas');
+      var context = canvas.getContext('2d');
+
+      context.beginPath();
+      context.arc(x, y, 70, 0, 2 * Math.PI, false);
+      context.fillStyle = 'green';
+      context.fill();
+      context.lineWidth = 5;
+      context.stroke();
+    }
+    drawCircle(0,0);
+    </script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script>
+        $("#myCanvas").on("click", function(evt) {
+            console.log(evt);
+            drawCircle(evt.clientX, evt.clientY);
+            });
+        
+    </script>
+  </body>
+</html>      
