@@ -182,7 +182,7 @@
                             console.log(game.score);
                         }
                         var heroHurtDistance = Math.sqrt(Math.pow(hurt.x-hero.x,2) + Math.pow(hurt.y-hero.y,2));
-                        if(heroHurtDistance < 30)
+                        if(heroHurtDistance < 25)
                         {   hurt.x = Math.floor(Math.random()*640);
                             hurt.y = 0;
                             game.lives -= 1;
