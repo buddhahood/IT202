@@ -4,12 +4,12 @@
         [
           { "name": "My Really Cool Project",
             "display": true,
-            "description" : "dooie",
-            "technologies": "AJAX,ial Components",
+            "description" : "decs",
+            "technologies": "AJAX, Components",
             "folder": "project4",
             "image" : "<some image url>"
           },
-          { "name": "My Otheroject",
+          { "name": "My Other Project",
             "display" : true,
             "description" : "A really cool restaurant project using AJAX, Canvas, Service Workers and funny animal sounds.", 
             "technologies": "AJAX, Responsive Design, Material Components",
