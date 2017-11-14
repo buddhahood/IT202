@@ -27,7 +27,7 @@
           list.append('<dd>' + projects[key].description + '<dd>');
           list.append('<dd>' + '<em>' + projects[key].technologies + '</em>' + '<dd>');
           //list.append('<dd> <a href = "   "   '+     project[key].folder + '"' +  </dd>');
-          list.append(  '<dd>   <a href="https://buddhahood.github.io/IT202/">' + "[" + '<em>' +   "view" + '</em>' + "]" + '</a> ' + '[' + '<em>'+ 
+          list.append(  '<dd>   <a href="https://buddhahood.github.io/IT202/" + projects[key].folder>' + "[" + '<em>' +   "view" + '</em>' + "]" + '</a> ' + '[' + '<em>'+ 
                                                                       "source" +      '</em>' + "]" +
                         '</dd>');
           list.append('<dd><br/></dd>');
