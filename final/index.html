@@ -1,0 +1,171 @@
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
+<style>
+  #map{
+    height:90%;
+    width: 100%;
+}
+</style>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAINfE_bDVwjQvnhP9oUZbgNZW51YrSZsU&callback=initMap"type="text/javascript"></script>
+<ul id="myTab" class="nav nav-tabs" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link active" href="#map" role="tab">Home</a></li>
+    <li class="nav-item">
+        <a class="nav-link" id="tab-map" href="#siren" role="tab">Emergency Siren</a></li>
+    <li class="nav-item">
+       <a class="nav-link" id="tab-map" href="#3" role="tab">Districts</a></li>
+
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+    <div role="tabpanel" class="tab-pane  in active oneAtATime" id="map">
+          <div id="map"></div>
+    </div>
+
+    <div role="tabpanel" class="tab-pane fade oneAtATime" id="siren">
+          <div id='container'>
+            <div id='airhorn'>
+              <div class='horn'>
+                <div class='inner'>
+                  <div class='center'></div>
+                </div>
+              </div>
+            </div>
+          </div>
+    </div>
+
+  
+    <div id='installer'>
+      <button class='button'>Install</button>
+      <span class='tooltip'></span>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script>
+      // Note: This example requires that you consent to location sharing when
+      // prompted by your browser. If you see the error "The Geolocation service
+      // failed.", it means you probably did not give permission for the browser to
+      // locate you.
+      var map, infoWindow;
+      function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: -34.397, lng: 150.644},
+          zoom: 18
+        });
+        infoWindow = new google.maps.InfoWindow;
+
+          navigator.geolocation.getCurrentPosition(function(position) {
+            var pos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+
+            infoWindow.setPosition(pos);
+            infoWindow.setContent('You');
+            infoWindow.open(map);
+            map.setCenter(pos);
+          
+          
+              /*  "https://data.cityofchicago.org/resource/6zsd-86xi.json?$where=within_circle(location," + latitude + ", " + longitude + ", 50)"; */
+        /* $.get("https://data.cityofchicago.org/resource/d62x-nvdr.json?", function(response) { */
+
+          $.get("https://data.cityofchicago.org/resource/d62x-nvdr.json?$where=within_circle(location," + position.coords.latitude + ", " + position.coords.longitude + ", 500)", function(response) {
+
+           
+           $.each(response, function(i,v) {
+              
+              var contentString = v.primary_type
+                    + "<br>" + v.date + "<br> District: " + v.district
+              
+              var infowindow = new google.maps.InfoWindow({
+                content: contentString
+              });
+      
+              var marker = new google.maps.Marker({
+                position: {lat: parseFloat(v.latitude), lng: parseFloat(v.longitude)},
+                map: map,
+    
+              });
+              
+              marker.addListener('click', function() {
+                infowindow.open(map, marker);
+              });             
+             
+           });
+        
+      });
+          
+          
+          }, function() {
+            handleLocationError(true, infoWindow, map.getCenter());
+          });
+
+     
+        
+      }
+
+      function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+        infoWindow.setPosition(pos);
+        infoWindow.setContent(browserHasGeolocation ?
+                              'Error: The Geolocation service failed.' :
+                              'Error: Your browser doesn\'t support geolocation.');
+        infoWindow.open(map);
+      }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?&callback=initMap">
+    </script>
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+     <div id='container'>
+      <div id='airhorn'>
+        <div class='horn'>
+          <div class='inner'>
+            <div class='center'></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id='installer'>
+      <button class='button'>Install</button>
+      <span class='tooltip'></span>
+    </div>
+
+    <script src="index.js"></script>
+
+    <script src="scripts/main.min.js"></script>
+    <script src="scripts/comlink.global.js"></script>
+    <script src="scripts/messagechanneladapter.global.js"></script>
+    <script>
+      if('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js')
+          .then(function(registration) {
+                console.log('Service Worker Registered');
+          });
+
+        navigator.serviceWorker.ready.then(function(registration) {
+           console.log('Service Worker Ready');
+        });
+      }
+    </script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAINfE_bDVwjQvnhP9oUZbgNZW51YrSZsU&callback=initMap"
+type="text/javascript"></script>
+
+    
+  </body>
+</html>
